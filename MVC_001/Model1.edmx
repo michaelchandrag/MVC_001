@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ASPCRUDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ASPCRUD.dbo.Contact' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="detail_cs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="exception" Type="varchar" MaxLength="50" />
+          <Property Name="material" Type="varchar" MaxLength="15" />
+          <Property Name="plant" Type="varchar" MaxLength="4" />
+          <Property Name="storage_location" Type="varchar" MaxLength="4" />
+          <Property Name="material_description" Type="varchar" MaxLength="50" />
+          <Property Name="base_unit_of_measure" Type="varchar" MaxLength="5" />
+          <Property Name="batch" Type="varchar" MaxLength="10" />
+          <Property Name="unrestricted" Type="int" />
+          <Property Name="in_quality" Type="int" />
+          <Property Name="blocked" Type="int" />
+          <Property Name="total_stock" Type="int" />
+          <Property Name="market" Type="varchar" MaxLength="50" />
+          <Property Name="week" Type="int" />
+          <Property Name="year" Type="varchar" MaxLength="10" />
+          <Property Name="warehouse" Type="varchar" MaxLength="10" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="storage_location" />
+          </Key>
+          <Property Name="storage_location" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="warehouse" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_detail_cs_storage">
+          <End Role="storage" Type="Self.storage" Multiplicity="0..1" />
+          <End Role="detail_cs" Type="Self.detail_cs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="storage">
+              <PropertyRef Name="storage_location" />
+            </Principal>
+            <Dependent Role="detail_cs">
+              <PropertyRef Name="storage_location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ASPCRUDModelStoreContainer">
+          <EntitySet Name="detail_cs" EntityType="Self.detail_cs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contact" EntityType="Self.Contact" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Contact].[ContactID] AS [ContactID], 
+    [Contact].[Name] AS [Name], 
+    [Contact].[Mobile] AS [Mobile], 
+    [Contact].[Address] AS [Address]
+    FROM [dbo].[Contact] AS [Contact]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_detail_cs_storage" Association="Self.FK_detail_cs_storage">
+            <End Role="storage" EntitySet="storage" />
+            <End Role="detail_cs" EntitySet="detail_cs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ASPCRUDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="detail_cs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="exception" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="material" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="plant" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="storage_location" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="material_description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="base_unit_of_measure" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="batch" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="unrestricted" Type="Int32" />
+          <Property Name="in_quality" Type="Int32" />
+          <Property Name="blocked" Type="Int32" />
+          <Property Name="total_stock" Type="Int32" />
+          <Property Name="market" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="week" Type="Int32" />
+          <Property Name="year" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="warehouse" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="storage" Relationship="Self.FK_detail_cs_storage" FromRole="detail_cs" ToRole="storage" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="storage_location" />
+          </Key>
+          <Property Name="storage_location" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="warehouse" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="detail_cs" Relationship="Self.FK_detail_cs_storage" FromRole="storage" ToRole="detail_cs" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_detail_cs_storage">
+          <End Role="storage" Type="Self.storage" Multiplicity="0..1" />
+          <End Role="detail_cs" Type="Self.detail_cs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="storage">
+              <PropertyRef Name="storage_location" />
+            </Principal>
+            <Dependent Role="detail_cs">
+              <PropertyRef Name="storage_location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ASPCRUDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="detail_cs" EntityType="Self.detail_cs" />
+          <EntitySet Name="storages" EntityType="Self.storage" />
+          <EntitySet Name="Contacts" EntityType="Self.Contact" />
+          <AssociationSet Name="FK_detail_cs_storage" Association="Self.FK_detail_cs_storage">
+            <End Role="storage" EntitySet="storages" />
+            <End Role="detail_cs" EntitySet="detail_cs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ASPCRUDModelStoreContainer" CdmEntityContainer="ASPCRUDEntities">
+          <EntitySetMapping Name="detail_cs">
+            <EntityTypeMapping TypeName="ASPCRUDModel.detail_cs">
+              <MappingFragment StoreEntitySet="detail_cs">
+                <ScalarProperty Name="exception" ColumnName="exception" />
+                <ScalarProperty Name="material" ColumnName="material" />
+                <ScalarProperty Name="plant" ColumnName="plant" />
+                <ScalarProperty Name="storage_location" ColumnName="storage_location" />
+                <ScalarProperty Name="material_description" ColumnName="material_description" />
+                <ScalarProperty Name="base_unit_of_measure" ColumnName="base_unit_of_measure" />
+                <ScalarProperty Name="batch" ColumnName="batch" />
+                <ScalarProperty Name="unrestricted" ColumnName="unrestricted" />
+                <ScalarProperty Name="in_quality" ColumnName="in_quality" />
+                <ScalarProperty Name="blocked" ColumnName="blocked" />
+                <ScalarProperty Name="total_stock" ColumnName="total_stock" />
+                <ScalarProperty Name="market" ColumnName="market" />
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="warehouse" ColumnName="warehouse" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="storages">
+            <EntityTypeMapping TypeName="ASPCRUDModel.storage">
+              <MappingFragment StoreEntitySet="storage">
+                <ScalarProperty Name="storage_location" ColumnName="storage_location" />
+                <ScalarProperty Name="warehouse" ColumnName="warehouse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="ASPCRUDModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "";
+    ViewBag.Title = "MVC_001";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - using jQuery</title>
+    <style>
+    table,th,td{
+        border:1px solid black;
+
+    }
+    </style>
+</head>
+<body>
+    <p>Choose file .xlsx then upload to server</p><br>
+        <input type="file" id="inputFile"><input type="submit" value="Upload File" id="btnSubmit">
+        <p id="pMessage"></p>
+        <table >
+            <tr>
+                <th>Storage Location</th>
+                <th>Warehouse</th>
+                <th>Action</th>
+            </tr>
+            @for (int i = 0; i < ViewBag.listStorage.Count; i++)
+            {
+                <tr>
+                <td>@ViewBag.listStorage[i].storage_location</td>
+                <td>@ViewBag.listStorage[i].warehouse</td>
+                <td><input type="button" value="Edit" class="btnEdit" id="@ViewBag.listStorage[i].storage_location"></td>
+                </tr>
+            }
+        </table><br>
+                <div id="masterStorage">
+                    Storage Location : <input type="text" id="txtStorageLocation" disabled/><br>
+                    Warehouse : <input type="text" id="txtWarehouse"><br>
+                    <input type="submit" value="Update" id="btnUpdate">
+                    <input type="submit" value="Delete" id="btnDelete">
+                </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        $("document").ready(function () {
+            $("#btnSubmit").click(function () {
+                var file_data1 = $('#inputFile').prop('files')[0];
+
+                var form_data = new FormData();
+                form_data.append('file1', file_data1);
+
+                $.ajax({
+                    url: "@Url.Action("Upload", "Home")",
+                    dataType: 'text',  // what to expect back from the PHP script, if anything
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    type: 'post',
+                    success: function (response) {
+                        $("#pMessage").text(response);
+                        console.log(response);
+                        if (response == "") {
+                            console.log("KOSONG");
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                        alert(xhr.responseText);
+                    }
+                });
+            
+            });
+
+
+            $(".btnEdit").click(function () {
+                var storage_location = $(this).attr("id");
+                console.log(storage_location);
+                $.ajax({
+                    url: "@Url.Action("Edit", "Home")",
+                    data: { storage_location: storage_location},
+                    type: 'POST',
+                    dataType:"json",
+                    success: function (response) {
+                        console.log(response);
+                        $("#txtStorageLocation").val(response.storage_location);
+                        $("#txtWarehouse").val(response.warehouse);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+
+            $("#btnUpdate").click(function () {
+                var storage_location = $("#txtStorageLocation").val();
+                var warehouse = $("#txtWarehouse").val();
+                $.ajax({
+                    url: "@Url.Action("Update", "Home")",
+                    data: { storage_location: storage_location,warehouse:warehouse},
+                    type: 'POST',
+                    success: function (response) {
+                        console.log(response);
+                        $("#pMessage").text("Success");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                        alert(xhr.responseText);
+                    }
+                });
+
+            });
+
+            $("#btnDelete").click(function () {
+                var storage_location = $("#txtStorageLocation").val();
+                $.ajax({
+                    url: "@Url.Action("Delete", "Home")",
+                    data: { storage_location: storage_location},
+                    type: 'POST',
+                    success: function (response) {
+                        console.log(response);
+                        $("#pMessage").text("Success");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                        alert(xhr.responseText);
+                    }
+                });
+
+            });
+        });
+    </script>
+</body>
+</html>

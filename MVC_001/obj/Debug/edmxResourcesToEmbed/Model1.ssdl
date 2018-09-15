@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ASPCRUDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ASPCRUD.dbo.Contact' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Mobile" Type="varchar" MaxLength="50" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="detail_cs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="exception" Type="varchar" MaxLength="50" />
+    <Property Name="material" Type="varchar" MaxLength="15" />
+    <Property Name="plant" Type="varchar" MaxLength="4" />
+    <Property Name="storage_location" Type="varchar" MaxLength="4" />
+    <Property Name="material_description" Type="varchar" MaxLength="50" />
+    <Property Name="base_unit_of_measure" Type="varchar" MaxLength="5" />
+    <Property Name="batch" Type="varchar" MaxLength="10" />
+    <Property Name="unrestricted" Type="int" />
+    <Property Name="in_quality" Type="int" />
+    <Property Name="blocked" Type="int" />
+    <Property Name="total_stock" Type="int" />
+    <Property Name="market" Type="varchar" MaxLength="50" />
+    <Property Name="week" Type="int" />
+    <Property Name="year" Type="varchar" MaxLength="10" />
+    <Property Name="warehouse" Type="varchar" MaxLength="10" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="storage">
+    <Key>
+      <PropertyRef Name="storage_location" />
+    </Key>
+    <Property Name="storage_location" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="warehouse" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK_detail_cs_storage">
+    <End Role="storage" Type="Self.storage" Multiplicity="0..1" />
+    <End Role="detail_cs" Type="Self.detail_cs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="storage">
+        <PropertyRef Name="storage_location" />
+      </Principal>
+      <Dependent Role="detail_cs">
+        <PropertyRef Name="storage_location" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ASPCRUDModelStoreContainer">
+    <EntitySet Name="detail_cs" EntityType="Self.detail_cs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contact" EntityType="Self.Contact" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Contact].[ContactID] AS [ContactID], 
+    [Contact].[Name] AS [Name], 
+    [Contact].[Mobile] AS [Mobile], 
+    [Contact].[Address] AS [Address]
+    FROM [dbo].[Contact] AS [Contact]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_detail_cs_storage" Association="Self.FK_detail_cs_storage">
+      <End Role="storage" EntitySet="storage" />
+      <End Role="detail_cs" EntitySet="detail_cs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

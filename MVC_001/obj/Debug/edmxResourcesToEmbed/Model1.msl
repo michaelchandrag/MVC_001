@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ASPCRUDModelStoreContainer" CdmEntityContainer="ASPCRUDEntities">
+    <EntitySetMapping Name="detail_cs">
+      <EntityTypeMapping TypeName="ASPCRUDModel.detail_cs">
+        <MappingFragment StoreEntitySet="detail_cs">
+          <ScalarProperty Name="exception" ColumnName="exception" />
+          <ScalarProperty Name="material" ColumnName="material" />
+          <ScalarProperty Name="plant" ColumnName="plant" />
+          <ScalarProperty Name="storage_location" ColumnName="storage_location" />
+          <ScalarProperty Name="material_description" ColumnName="material_description" />
+          <ScalarProperty Name="base_unit_of_measure" ColumnName="base_unit_of_measure" />
+          <ScalarProperty Name="batch" ColumnName="batch" />
+          <ScalarProperty Name="unrestricted" ColumnName="unrestricted" />
+          <ScalarProperty Name="in_quality" ColumnName="in_quality" />
+          <ScalarProperty Name="blocked" ColumnName="blocked" />
+          <ScalarProperty Name="total_stock" ColumnName="total_stock" />
+          <ScalarProperty Name="market" ColumnName="market" />
+          <ScalarProperty Name="week" ColumnName="week" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="warehouse" ColumnName="warehouse" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="storages">
+      <EntityTypeMapping TypeName="ASPCRUDModel.storage">
+        <MappingFragment StoreEntitySet="storage">
+          <ScalarProperty Name="storage_location" ColumnName="storage_location" />
+          <ScalarProperty Name="warehouse" ColumnName="warehouse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contacts">
+      <EntityTypeMapping TypeName="ASPCRUDModel.Contact">
+        <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
